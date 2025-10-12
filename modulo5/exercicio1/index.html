@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Temporizador Contagem Regressiva</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #temporizador {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Contagem Regressiva</h1>
+  <div id="temporizador">Carregando...</div>
+
+  <script>
+    // 1 - Função para calcular o tempo restante até a data futura
+    function calcularTempoRestante(dataFutura) {
+      const agora = new Date();
+      const diferenca = dataFutura - agora; // diferença em milissegundos
+
+      if (diferenca <= 0) {
+        return null; // Tempo expirado
+      }
+
+      const segundosTotais = Math.floor(diferenca / 1000);
+      const dias = Math.floor(segundosTotais / (3600 * 24));
+      const horas = Math.floor((segundosTotais % (3600 * 24)) / 3600);
+      const minutos = Math.floor((segundosTotais % 3600) / 60);
+      const segundos = segundosTotais % 60;
+
+      return { dias, horas, minutos, segundos };
+    }
+
+    // 2 - Função para atualizar o temporizador na tela
+    function atualizarTemporizador() {
+      const dataFutura = new Date("2025-12-31T23:59:59"); // Defina sua data futura aqui
+      const tempoRestante = calcularTempoRestante(dataFutura);
+
+      const temporizadorElemento = document.getElementById("temporizador");
+
+      if (!tempoRestante) {
+        temporizadorElemento.textContent = "Tempo esgotado!";
+        clearInterval(intervalo); // Para o intervalo
+        return;
+      }
+
+      temporizadorElemento.textContent =
+        `${tempoRestante.dias}d ${tempoRestante.horas}h ` +
+        `${tempoRestante.minutos}m ${tempoRestante.segundos}s`;
+    }
+
+    // 3 - Usar setInterval para atualizar o temporizador a cada segundo
+    atualizarTemporizador(); // Atualiza imediatamente ao carregar
+    const intervalo = setInterval(atualizarTemporizador, 1000);
+  </script>
+  
+</body>
+</html>
+
